@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE BROTHER FARM - Sistem Keuangan & Populasi Ternak</title>
-    <!-- Tailwind CSS CDN -->
+    <title>THE BROTHER FARM</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- PWA Manifest Link -->
     <link rel="manifest" href="manifest.json">
-    <!-- Firebase SDK (Realtime Database) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
@@ -29,17 +25,17 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <span id="syncStatus" class="bg-emerald-900/50 text-emerald-400 border border-emerald-700/50 text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5">
-                    <i class="fa-solid fa-cloud text-xs"></i> Cloud Sync Aktif
+                <span class="bg-emerald-900/50 text-emerald-400 border border-emerald-700/50 text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+                    <i class="fa-solid fa-cloud text-xs"></i> Cloud Sync Online
                 </span>
             </div>
         </header>
 
-        <!-- Ringkasan Keuangan -->
+        <!-- Dashboard Keuangan -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-[#1e293b] border border-gray-800 p-4 rounded-xl flex justify-between items-center shadow-sm">
+            <div class="bg-[#1e293b] border border-gray-800 p-4 rounded-xl flex justify-between items-center">
                 <div>
-                    <p class="text-xs text-gray-400 font-medium uppercase tracking-wider">Total Pemasukan</p>
+                    <p class="text-xs text-gray-400 font-medium uppercase">TOTAL PEMASUKAN</p>
                     <h2 id="totalIncome" class="text-2xl font-bold text-emerald-400 mt-1">Rp 0</h2>
                 </div>
                 <div class="bg-emerald-950/60 text-emerald-400 p-3 rounded-lg border border-emerald-800/40">
@@ -47,9 +43,9 @@
                 </div>
             </div>
 
-            <div class="bg-[#1e293b] border border-gray-800 p-4 rounded-xl flex justify-between items-center shadow-sm">
+            <div class="bg-[#1e293b] border border-gray-800 p-4 rounded-xl flex justify-between items-center">
                 <div>
-                    <p class="text-xs text-gray-400 font-medium uppercase tracking-wider">Total Pengeluaran</p>
+                    <p class="text-xs text-gray-400 font-medium uppercase">TOTAL PENGELUARAN</p>
                     <h2 id="totalExpense" class="text-2xl font-bold text-rose-400 mt-1">Rp 0</h2>
                 </div>
                 <div class="bg-rose-950/60 text-rose-400 p-3 rounded-lg border border-rose-800/40">
@@ -57,9 +53,9 @@
                 </div>
             </div>
 
-            <div class="bg-[#1e293b] border border-gray-800 p-4 rounded-xl flex justify-between items-center shadow-sm">
+            <div class="bg-[#1e293b] border border-gray-800 p-4 rounded-xl flex justify-between items-center">
                 <div>
-                    <p class="text-xs text-gray-400 font-medium uppercase tracking-wider">Saldo Akhir</p>
+                    <p class="text-xs text-gray-400 font-medium uppercase">SALDO AKHIR</p>
                     <h2 id="finalBalance" class="text-2xl font-bold text-sky-400 mt-1">Rp 0</h2>
                 </div>
                 <div class="bg-sky-950/60 text-sky-400 p-3 rounded-lg border border-sky-800/40">
@@ -67,9 +63,9 @@
                 </div>
             </div>
 
-            <div class="bg-[#1e293b] border border-gray-800 p-4 rounded-xl flex justify-between items-center shadow-sm">
+            <div class="bg-[#1e293b] border border-gray-800 p-4 rounded-xl flex justify-between items-center">
                 <div>
-                    <p class="text-xs text-gray-400 font-medium uppercase tracking-wider">Estimasi Laba / Rugi</p>
+                    <p class="text-xs text-gray-400 font-medium uppercase">ESTIMASI LABA / RUGI</p>
                     <h2 id="netProfit" class="text-2xl font-bold text-amber-400 mt-1">Rp 0</h2>
                 </div>
                 <div class="bg-amber-950/60 text-amber-400 p-3 rounded-lg border border-amber-800/40">
@@ -84,61 +80,172 @@
                 <i class="fa-solid fa-feather text-emerald-400"></i> TRACKER POPULASI AYAM
             </h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="bg-[#0f172a] border border-gray-800/80 p-3 rounded-lg text-center">
+                <div class="bg-[#0f172a] border border-gray-800 p-3 rounded-lg text-center">
                     <p class="text-[11px] text-gray-400">Ayam Masuk (DOC/Masuk)</p>
                     <p id="popIn" class="text-lg font-bold text-gray-100 mt-1">0 Ekor</p>
                 </div>
-                <div class="bg-[#0f172a] border border-gray-800/80 p-3 rounded-lg text-center">
+                <div class="bg-[#0f172a] border border-gray-800 p-3 rounded-lg text-center">
                     <p class="text-[11px] text-gray-400">Terjual</p>
                     <p id="popSold" class="text-lg font-bold text-emerald-400 mt-1">0 Ekor</p>
                 </div>
-                <div class="bg-[#0f172a] border border-gray-800/80 p-3 rounded-lg text-center">
+                <div class="bg-[#0f172a] border border-gray-800 p-3 rounded-lg text-center">
                     <p class="text-[11px] text-gray-400">Mati / Afkir</p>
                     <p id="popDead" class="text-lg font-bold text-rose-400 mt-1">0 Ekor</p>
                 </div>
-                <div class="bg-[#0f172a] border border-gray-800/80 p-3 rounded-lg text-center">
+                <div class="bg-[#0f172a] border border-gray-800 p-3 rounded-lg text-center">
                     <p class="text-[11px] text-gray-400">Sisa Ayam Hidup</p>
                     <p id="popAlive" class="text-lg font-bold text-sky-400 mt-1">0 Ekor</p>
                 </div>
             </div>
         </div>
 
-        <!-- Form Catat Transaksi -->
+        <!-- Form Input -->
         <div class="bg-[#1e293b] border border-gray-800 p-4 rounded-xl space-y-4">
             <h3 class="text-sm font-semibold text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-circle-plus text-emerald-400"></i> Catat Transaksi / Pembelian Barang / Gaji
             </h3>
             <form id="transForm" class="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs text-gray-400 mb-1">Jenis Transaksi</label>
-                    <select id="transType" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200 focus:outline-none focus:border-emerald-500">
-                        <option value="Pemasukan">Pemasukan (Penjualan Ayam/Telur)</option>
-                        <option value="Pengeluaran">Pengeluaran (Beli Pakan/DOC/Obat/Gaji)</option>
-                        <option value="Populasi Masuk">Populasi Masuk (Tambah DOC/Ayam)</option>
-                        <option value="Populasi Keluar (Mati/Afkir)">Populasi Keluar (Mati/Afkir)</option>
+                    <label class="block text-xs text-gray-400 mb-1">Kategori Transaksi</label>
+                    <select id="transCategory" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200">
+                        <option value="in">Pemasukan (Uang Masuk / Jual Ayam)</option>
+                        <option value="out">Pengeluaran (Beli Pakan / DOC / Gaji)</option>
+                        <option value="doc">Ayam Masuk (Populasi DOC)</option>
+                        <option value="dead">Ayam Mati / Afkir</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-400 mb-1">Keterangan / Nama Item</label>
-                    <input type="text" id="transDesc" required placeholder="Contoh: Beli Pakan BR1 / Jual Panen" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200 focus:outline-none focus:border-emerald-500">
+                    <label class="block text-xs text-gray-400 mb-1">Keterangan / Nama Barang</label>
+                    <input type="text" id="transDesc" required placeholder="Contoh: Beli Pakan / Panen Ayam" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200">
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-400 mb-1">Jumlah Ekor / Satuan (Opsional)</label>
-                    <input type="number" id="transQty" min="0" value="0" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200 focus:outline-none focus:border-emerald-500">
+                    <label class="block text-xs text-gray-400 mb-1">Jumlah Ekor (Jika Ada)</label>
+                    <input type="number" id="transQty" value="0" min="0" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200">
                 </div>
                 <div>
                     <label class="block text-xs text-gray-400 mb-1">Nominal Rupiah (Rp)</label>
-                    <input type="number" id="transAmount" min="0" required placeholder="500000" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200 focus:outline-none focus:border-emerald-500">
+                    <input type="number" id="transAmount" value="0" min="0" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200">
                 </div>
                 <div class="md:col-span-2 pt-2">
-                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg text-sm transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Simpan & Sinkronkan Data
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg text-sm transition">
+                        Simpan Data
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- Riwayat Transaksi -->
+        <!-- Riwayat -->
         <div class="bg-[#1e293b] border border-gray-800 p-4 rounded-xl space-y-3">
-            <h3 class="text-sm font-semibold text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-clock-rotate-
+            <h3 class="text-sm font-semibold text-gray-300">Riwayat Transaksi</h3>
+            <div id="transList" class="space-y-2"></div>
+        </div>
+    </div>
+
+    <script>
+        // Database publik universal
+        const firebaseConfig = {
+            databaseURL: "https://brother-farm-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+        
+        let localData = [];
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+        } catch(e) {}
+
+        const db = firebase.database ? firebase.database() : null;
+
+        const transForm = document.getElementById('transForm');
+        const transList = document.getElementById('transList');
+
+        // Fungsi Simpan
+        transForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const category = document.getElementById('transCategory').value;
+            const desc = document.getElementById('transDesc').value;
+            const qty = parseFloat(document.getElementById('transQty').value) || 0;
+            const amount = parseFloat(document.getElementById('transAmount').value) || 0;
+            const date = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+            const newItem = { category, desc, qty, amount, date, timestamp: Date.now() };
+
+            if (db) {
+                db.ref('brother_farm_final').push(newItem);
+            } else {
+                localData.push(newItem);
+                renderData(localData);
+            }
+
+            transForm.reset();
+        });
+
+        // Ambil Data & Hitung
+        if (db) {
+            db.ref('brother_farm_final').on('value', (snapshot) => {
+                const data = snapshot.val();
+                let items = [];
+                if (data) {
+                    for (let id in data) {
+                        items.unshift(data[id]);
+                    }
+                }
+                renderData(items);
+            });
+        }
+
+        function renderData(items) {
+            transList.innerHTML = '';
+            let inc = 0, exp = 0, pIn = 0, pSold = 0, pDead = 0;
+
+            if (items.length === 0) {
+                transList.innerHTML = '<p class="text-xs text-gray-500 text-center py-2">Belum ada data</p>';
+            }
+
+            items.forEach(item => {
+                if (item.category === 'in') {
+                    inc += item.amount;
+                    if (item.qty > 0) pSold += item.qty;
+                } else if (item.category === 'out') {
+                    exp += item.amount;
+                } else if (item.category === 'doc') {
+                    pIn += item.qty;
+                    if (item.amount > 0) exp += item.amount;
+                } else if (item.category === 'dead') {
+                    pDead += item.qty;
+                }
+
+                let catLabel = item.category === 'in' ? 'Pemasukan' : (item.category === 'out' ? 'Pengeluaran' : (item.category === 'doc' ? 'Ayam Masuk' : 'Mati/Afkir'));
+                let badgeColor = item.category === 'in' ? 'text-emerald-400 bg-emerald-950/50' : (item.category === 'out' ? 'text-rose-400 bg-rose-950/50' : 'text-amber-400 bg-amber-950/50');
+
+                transList.innerHTML += `
+                    <div class="bg-[#0f172a] border border-gray-800 p-3 rounded-lg flex justify-between items-center text-xs">
+                        <div>
+                            <span class="inline-block px-2 py-0.5 rounded ${badgeColor} font-semibold mb-1">${catLabel}</span>
+                            <p class="font-semibold text-gray-200 text-sm">${item.desc}</p>
+                            <p class="text-gray-400">${item.qty > 0 ? item.qty + ' Ekor | ' : ''}${item.date}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-sm ${item.category === 'in' ? 'text-emerald-400' : (item.category === 'out' ? 'text-rose-400' : 'text-gray-300')}">
+                                ${item.amount > 0 ? 'Rp ' + item.amount.toLocaleString('id-ID') : '-'}
+                            </p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Update UI Angka
+            document.getElementById('totalIncome').innerText = 'Rp ' + inc.toLocaleString('id-ID');
+            document.getElementById('totalExpense').innerText = 'Rp ' + exp.toLocaleString('id-ID');
+            let balance = inc - exp;
+            document.getElementById('finalBalance').innerText = 'Rp ' + balance.toLocaleString('id-ID');
+            document.getElementById('netProfit').innerText = 'Rp ' + balance.toLocaleString('id-ID');
+
+            document.getElementById('popIn').innerText = pIn + ' Ekor';
+            document.getElementById('popSold').innerText = pSold + ' Ekor';
+            document.getElementById('popDead').innerText = pDead + ' Ekor';
+            let alive = pIn - (pSold + pDead);
+            document.getElementById('popAlive').innerText = (alive >= 0 ? alive : 0) + ' Ekor';
+        }
+    </script>
+</body>
+</html>
