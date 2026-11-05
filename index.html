@@ -14,8 +14,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
-<body class="bg-[#0f172a] text-gray-100 font-sans min-p-4">
-    <div class="max-w-4xl mx-auto p-4 space-y-6">
+<body class="bg-[#0f172a] text-gray-100 font-sans p-4">
+    <div class="max-w-4xl mx-auto space-y-6">
         
         <!-- Header -->
         <header class="flex flex-col md:flex-row justify-between items-center bg-[#1e293b] p-4 rounded-xl border border-gray-800 shadow-md gap-4">
@@ -112,25 +112,22 @@
                 <div>
                     <label class="block text-xs text-gray-400 mb-1">Jenis Transaksi</label>
                     <select id="transType" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200 focus:outline-none focus:border-emerald-500">
-                        <option value="Pemasukan Penjualan Ayam">Pemasukan Penjualan Ayam</option>
-                        <option value="Pemasukan Penjualan Telur">Pemasukan Penjualan Telur</option>
-                        <option value="Pengeluaran Beli Pakan">Pengeluaran Beli Pakan</option>
-                        <option value="Pengeluaran Beli DOC / Ayam">Pengeluaran Beli DOC / Ayam</option>
-                        <option value="Pengeluaran Obat / Vaksin">Pengeluaran Obat / Vaksin</option>
-                        <option value="Pengeluaran Lainnya (Gaji/Operasional)">Pengeluaran Lainnya (Gaji/Operasional)</option>
-                        <option value="Ayam Mati / Afkir (Catatan Populasi)">Ayam Mati / Afkir (Catatan Populasi)</option>
+                        <option value="Pemasukan">Pemasukan (Penjualan Ayam/Telur)</option>
+                        <option value="Pengeluaran">Pengeluaran (Beli Pakan/DOC/Obat/Gaji)</option>
+                        <option value="Populasi Masuk">Populasi Masuk (Tambah DOC/Ayam)</option>
+                        <option value="Populasi Keluar (Mati/Afkir)">Populasi Keluar (Mati/Afkir)</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs text-gray-400 mb-1">Keterangan / Nama Item</label>
-                    <input type="text" id="transDesc" required placeholder="Contoh: Broiler Panen Kandang A" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200 focus:outline-none focus:border-emerald-500">
+                    <input type="text" id="transDesc" required placeholder="Contoh: Beli Pakan BR1 / Jual Panen" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200 focus:outline-none focus:border-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-400 mb-1">Jumlah (Ekor / Sak / Kg)</label>
+                    <label class="block text-xs text-gray-400 mb-1">Jumlah Ekor / Satuan (Opsional)</label>
                     <input type="number" id="transQty" min="0" value="0" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200 focus:outline-none focus:border-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-400 mb-1">Nominal (Rp)</label>
+                    <label class="block text-xs text-gray-400 mb-1">Nominal Rupiah (Rp)</label>
                     <input type="number" id="transAmount" min="0" required placeholder="500000" class="w-full bg-[#0f172a] border border-gray-700 text-sm rounded-lg p-2.5 text-gray-200 focus:outline-none focus:border-emerald-500">
                 </div>
                 <div class="md:col-span-2 pt-2">
@@ -144,126 +141,4 @@
         <!-- Riwayat Transaksi -->
         <div class="bg-[#1e293b] border border-gray-800 p-4 rounded-xl space-y-3">
             <h3 class="text-sm font-semibold text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-clock-rotate-left text-emerald-400"></i> Riwayat Transaksi Real-Time
-            </h3>
-            <div id="transList" class="space-y-2">
-                <p class="text-xs text-gray-500 text-center py-4">Memuat riwayat dari database...</p>
-            </div>
-        </div>
-
-        <footer class="text-center text-xs text-gray-500 py-4">
-            &copy; 2026 The Brother Farm - All Rights Reserved
-        </footer>
-    </div>
-
-    <!-- Script Koneksi Database Real-Time & Kalkulasi -->
-    <script>
-        const firebaseConfig = {
-            databaseURL: "https://brother-farm-default-rtdb.firebaseio.com/"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        const transForm = document.getElementById('transForm');
-        const transList = document.getElementById('transList');
-
-        const totalIncomeEl = document.getElementById('totalIncome');
-        const totalExpenseEl = document.getElementById('totalExpense');
-        const finalBalanceEl = document.getElementById('finalBalance');
-        const netProfitEl = document.getElementById('netProfit');
-
-        const popInEl = document.getElementById('popIn');
-        const popSoldEl = document.getElementById('popSold');
-        const popDeadEl = document.getElementById('popDead');
-        const popAliveEl = document.getElementById('popAlive');
-
-        transForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const type = document.getElementById('transType').value;
-            const desc = document.getElementById('transDesc').value;
-            const qty = Number(document.getElementById('transQty').value) || 0;
-            const amount = Number(document.getElementById('transAmount').value) || 0;
-            const date = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-
-            db.ref('brother_farm_v2').push({
-                type, desc, qty, amount, date,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
-            });
-
-            transForm.reset();
-        });
-
-        db.ref('brother_farm_v2').orderByChild('timestamp').on('value', (snapshot) => {
-            transList.innerHTML = '';
-            const data = snapshot.val();
-
-            if (!data) {
-                transList.innerHTML = '<p class="text-xs text-gray-500 text-center py-4">Belum ada data transaksi.</p>';
-                totalIncomeEl.innerText = 'Rp 0';
-                totalExpenseEl.innerText = 'Rp 0';
-                finalBalanceEl.innerText = 'Rp 0';
-                netProfitEl.innerText = 'Rp 0';
-                popInEl.innerText = '0 Ekor';
-                popSoldEl.innerText = '0 Ekor';
-                popDeadEl.innerText = '0 Ekor';
-                popAliveEl.innerText = '0 Ekor';
-                return;
-            }
-
-            let income = 0;
-            let expense = 0;
-            let pIn = 0;
-            let pSold = 0;
-            let pDead = 0;
-            let itemsArray = [];
-
-            snapshot.forEach((childSnapshot) => {
-                itemsArray.unshift({ id: childSnapshot.key, ...childSnapshot.val() });
-            });
-
-            itemsArray.forEach(item => {
-                if (item.type.includes('Pemasukan')) {
-                    income += Number(item.amount);
-                } else if (item.type.includes('Pengeluaran')) {
-                    expense += Number(item.amount);
-                }
-
-                if (item.type.includes('DOC') || item.type.includes('Masuk')) {
-                    pIn += item.qty;
-                } else if (item.type.includes('Penjualan Ayam')) {
-                    pSold += item.qty;
-                } else if (item.type.includes('Mati')) {
-                    pDead += item.qty;
-                }
-
-                let badgeColor = item.type.includes('Pemasukan') ? 'text-emerald-400 bg-emerald-950/50 border-emerald-800/40' : (item.type.includes('Mati') ? 'text-rose-400 bg-rose-950/50 border-rose-800/40' : 'text-amber-400 bg-amber-950/50 border-amber-800/40');
-
-                transList.innerHTML += `
-                    <div class="bg-[#0f172a] border border-gray-800 p-3 rounded-lg flex justify-between items-center text-xs">
-                        <div>
-                            <span class="inline-block px-2 py-0.5 rounded border ${badgeColor} font-semibold mb-1">${item.type}</span>
-                            <p class="font-semibold text-gray-200 text-sm">${item.desc}</p>
-                            <p class="text-gray-400">Jumlah: ${item.qty} | ${item.date}</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-bold text-sm ${item.type.includes('Pemasukan') ? 'text-emerald-400' : 'text-rose-400'}">Rp ${Number(item.amount).toLocaleString('id-ID')}</p>
-                        </div>
-                    </div>
-                `;
-            });
-
-            let profit = income - expense;
-            totalIncomeEl.innerText = `Rp ${income.toLocaleString('id-ID')}`;
-            totalExpenseEl.innerText = `Rp ${expense.toLocaleString('id-ID')}`;
-            finalBalanceEl.innerText = `Rp ${profit.toLocaleString('id-ID')}`;
-            netProfitEl.innerText = `Rp ${profit.toLocaleString('id-ID')}`;
-
-            let alive = pIn - (pSold + pDead);
-            popInEl.innerText = `${pIn} Ekor`;
-            popSoldEl.innerText = `${pSold} Ekor`;
-            popDeadEl.innerText = `${pDead} Ekor`;
-            popAliveEl.innerText = `${alive >= 0 ? alive : 0} Ekor`;
-        });
-    </script>
-</body>
-</html>
+                <i class="fa-solid fa-clock-rotate-
